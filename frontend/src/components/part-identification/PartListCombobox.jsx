@@ -62,6 +62,8 @@ export function PartListCombobox({ parts, onSelect }) {
                 <CommandItem
                   key={part.id}
                   onSelect={() => {
+                    if (part.status !== "identified") return; // ⛔️ nicht klickbar außer identified
+
                     if (selectionMode) {
                       toggleSelection(part.id);
                     } else {
@@ -100,7 +102,11 @@ export function PartListCombobox({ parts, onSelect }) {
                         </div>
                         <div className="flex-shrink-0">
                           {part.status === "searching" && <Loader2 className="h-4 w-4 animate-spin text-neutral-500" />}
-                          {part.status === "failed" && <X className="h-4 w-4 text-red-500" />}
+                          {part.status === "failed" && (
+                            <div className="flex items-center gap-1">
+                              <X className="h-4 w-4 text-red-300" /> <p className="text-red-300">failed</p>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </>
