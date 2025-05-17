@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import FileDropArea from "@/components/partnumber-input/FileDropArea";
 import GlobalFileDropOverlay from "@/components/partnumber-input/GlobalFileDropOverlay";
 
-function Home({ onStartIdentification }) {
+function Home({ onStart, onInitialParts, onUpdateParts }) {
   const [showOverlay, setShowOverlay] = useState(false);
   const [parts, setParts] = useState([]);
 
   const handleFileSelected = async (file) => {
+    onStart(); // ← direkt zur Identifikation wechseln
+
     const formData = new FormData();
     formData.append("file", file);
 
@@ -25,58 +27,43 @@ function Home({ onStartIdentification }) {
     const reader = res.body.getReader();
     const decoder = new TextDecoder("utf-8");
     let buffer = "";
+    let partList = [];
 
-    const partList = [];
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
 
-    const streamParts = new Promise((resolve) => {
-      (async () => {
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) break;
+      buffer += decoder.decode(value, { stream: true });
 
-          buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n\n");
+      buffer = lines.pop() || "";
 
-          const lines = buffer.split("\n\n");
-          buffer = lines.pop() || "";
+      for (const line of lines) {
+        console.log("LINE PRINT");
 
-          for (const line of lines) {
-            if (!line.startsWith("data: ")) continue;
-            const jsonData = JSON.parse(line.replace("data: ", ""));
+        console.log(lines);
 
-            if (jsonData.status === "initial") {
-              const pendingParts = jsonData.partnumbers.map((pn, idx) => ({
-                id: pn,
-                partNumber: pn,
-                status: "pending",
-              }));
-              partList.push(...pendingParts);
-            } else if (jsonData.status === "processed") {
-              const index = partList.findIndex((p) => p.id === jsonData.partnumber);
-              if (index !== -1) {
-                partList[index] = {
-                  ...partList[index],
-                  ...jsonData.data,
-                  status: "identified",
-                };
-              }
-            } else if (jsonData.status === "error") {
-              const index = partList.findIndex((p) => p.id === jsonData.partnumber);
-              if (index !== -1) {
-                partList[index] = {
-                  ...partList[index],
-                  status: "failed",
-                };
-              }
-            }
-          }
+        if (!line.startsWith("data: ")) continue;
+        const jsonData = JSON.parse(line.replace("data: ", ""));
+
+        if (jsonData.status === "initial") {
+          partList = jsonData.partnumbers.map((pn) => ({
+            id: pn,
+            partNumber: pn,
+            status: "pending",
+          }));
+          onInitialParts(partList); // ← initial zeigen
+        } else if (jsonData.status === "processed") {
+          const updated = partList.map((p) => (p.id === jsonData.partnumber ? { ...p, ...jsonData.data, status: "identified" } : p));
+          partList = updated;
+          onUpdateParts(updated);
+        } else if (jsonData.status === "error") {
+          const updated = partList.map((p) => (p.id === jsonData.partnumber ? { ...p, status: "failed" } : p));
+          partList = updated;
+          onUpdateParts(updated);
         }
-
-        resolve(partList);
-      })();
-    });
-
-    // 🔁 Übergibt Promise an App
-    onStartIdentification(streamParts);
+      }
+    }
   };
 
   useEffect(() => {
