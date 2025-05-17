@@ -1,0 +1,2 @@
+name,manufacturer,partnumber,category,inductance,rated_current,case_code,dimensions,shielding,dc_resistance,tolerance,min_operating_temp,max_operating_temp,self_resonant_freq
+"L1, L2",COILCRAFT,SER201-202MLD,Inductor,null,null,,,,,,,,
