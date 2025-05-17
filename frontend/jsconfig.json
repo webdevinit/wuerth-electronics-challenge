@@ -4,7 +4,10 @@
      "paths": {
        "@/*": ["src/*"]
      },
-     "jsx": "react-jsx"
+     "jsx": "react-jsx",
+     "module": "esnext",
+     "moduleResolution": "node",
+     "allowSyntheticDefaultImports": true
    },
    "include": ["src"]
  }

@@ -1,0 +1,17 @@
+name,manufacturer,partnumber,category,resistance,power_rating,case_code,dimensions,tolerance,temp_coefficient,min_operating_temp,max_operating_temp
+"R2, R3, R18, R25, R28, R36, R41, R43, R48, R50, R52, R59",VISHAY,CRCW06030000Z0EA,Resistor,0Ω,1/10W,0603,,,,,
+"R1, R5",VISHAY,CRCW06031100M0JNEA,Resistor,1MΩ,1/10W,0603,,±1%,,,
+R12,VISHAY,CRCW0603100RFKEA,Resistor,100R,null,,,,,,
+R20,"TE CONNECTIVITY, PANASONIC",CPF0603B3K01E1,Resistor,3.01kOhm,0.1W,0603,"(1.6, 0.8, 0.45)",±0.1%,25ppm/°C,-55°C,155°C
+R21,PANASONIC,ERJ-3EKF5901V,Resistor,5.9kΩ,1/10W,0603,,±1%,,,
+R23,VISHAY,CRCW06031400MFKEA,Resistor,1.4MΩ,1/10W,0603,,±1%,,,
+R29,VISHAY,CRCW0603200KFEA,Resistor,200Ω,1/10W,0603,,±1%,,,
+R32,VISHAY,CRCW0603100KFEA,Resistor,100kOhm,null,,,,,,
+R37,PANASONIC,ERJ-3EKF7502V,Resistor,7.5kΩ,1/10W,0603,,±1%,,,
+R49,PANASONIC,ERJ-3EKF1001V,Resistor,1kΩ,1/10W,0603,,±1%,,,
+"R56, R62",PANASONIC,ERJ-3EKF1004X,Resistor,1MΩ,1/10W,0603,,±1%,,,
+R57,PANASONIC,ERJ-3EKF1003Y,Resistor,100kOhm,0.1W,,,±1%,,,
+R7,VISHAY,CRCW04022R20JNED,Resistor,2.20Ω,1/16W,0402,,±5%,,,
+"RS1, RS2",VISHAY,WSLP25121L500FEA,Resistor,0.0015Ω,3W,2512,,±1%,,,
+"R10, R39",,0402,Resistor,OPTION,null,0402,,,,,
+R67,,2512,Resistor,OPTION,RES.,2512,,,,,

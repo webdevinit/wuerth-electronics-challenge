@@ -1,0 +1,2 @@
+name,manufacturer,partnumber,category,inductance,rated_current,case_code,dimensions,shielding,dc_resistance,tolerance,min_operating_temp,max_operating_temp,self_resonant_freq
+SER201-202MLD,Coilcraft,SER201-202MLD,Inductor,2µH,27A,2010,"(19.18, 9.27, 13.97)",Shielded,2.15mΩ,±20%,-40°C,85°C,62MHz

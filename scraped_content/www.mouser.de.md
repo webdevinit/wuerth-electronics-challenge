@@ -1,0 +1,3 @@
+# Content from https://www.mouser.de/ProductDetail/Vishay-Vitramon/HV2220Y103KXHATHV?qs=FphPqe%252Bob2iFgQ66zqiYBw%3D%3D&srsltid=AfmBOooekcSyTUuyyGI81Nlr596Vv-UHXuW996YwtWRPTF3eGG_vNWZ5
+
+Error scraping https://www.mouser.de/ProductDetail/Vishay-Vitramon/HV2220Y103KXHATHV?qs=FphPqe%252Bob2iFgQ66zqiYBw%3D%3D&srsltid=AfmBOooekcSyTUuyyGI81Nlr596Vv-UHXuW996YwtWRPTF3eGG_vNWZ5: 403 Client Error: Forbidden for url: https://www.mouser.de/ProductDetail/Vishay-Vitramon/HV2220Y103KXHATHV?qs=FphPqe%252Bob2iFgQ66zqiYBw%3D%3D&srsltid=AfmBOooekcSyTUuyyGI81Nlr596Vv-UHXuW996YwtWRPTF3eGG_vNWZ5
