@@ -42,7 +42,7 @@ async def upload_excel(file: UploadFile = File(...)):
                 
         all_components = all_components[:5]
 
-
+        results = []
         async def event_generator(components_list):
             # Send initial message with total count and basic info
             initial_data = {
@@ -59,13 +59,15 @@ async def upload_excel(file: UploadFile = File(...)):
 
                     # Get component model from part number
                     component_model_result = get_component_model_from_partnumber(partnumber)
+                    results.append(component_model_result)
 
                     # Format result for SSE
                     event_data = {
                         "index": i,
+                        "productType:": component_model_result.productType,
+                        "manufacturer": component_model_result.manufacturer,
                         "partnumber": partnumber,
                         "status": "processed",
-                        "data": component_model_result # Include the result from the new function
                     }
                     yield f"data: {json.dumps(event_data)}\n\n"
 

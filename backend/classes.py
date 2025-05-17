@@ -6,6 +6,7 @@ class Component:
         self.manufacturer = manufacturer
         self.partnumber = partnumber
         self.category = None  # Will be set by child classes
+        self.technology = None 
 
 
 class Capacitor(Component):
@@ -26,9 +27,10 @@ class Capacitor(Component):
     
     def __init__(self, name, manufacturer, capacitance, rated_voltage, partnumber, case_code=None, dimensions=None, 
                  tolerance=None, dielectric_material=None, temp_coefficient=None, 
-                 min_operating_temp=None, max_operating_temp=None):
+                 min_operating_temp=None, max_operating_temp=None, technology=None):
         super().__init__(name, manufacturer, partnumber )
         self.category = "Capacitor"
+        self.technology = technology
         
         # Core constraints
         self.capacitance = capacitance
@@ -65,9 +67,10 @@ class Inductor(Component):
     
     def __init__(self, name, manufacturer, partnumber, inductance, rated_current, case_code=None, dimensions=None,
                  shielding=None, dc_resistance=None, tolerance=None,
-                 min_operating_temp=None, max_operating_temp=None, self_resonant_freq=None):
+                 min_operating_temp=None, max_operating_temp=None, self_resonant_freq=None, technology=None):
         super().__init__(name, manufacturer, partnumber)
         self.category = "Inductor"
+        self.technology = technology
         
         # Core constraints
         self.inductance = inductance
@@ -102,9 +105,10 @@ class Resistor(Component):
     """
     
     def __init__(self, name, manufacturer, partnumber, resistance, power_rating, case_code=None, dimensions=None,
-                 tolerance=None, temp_coefficient=None, min_operating_temp=None, max_operating_temp=None):
+                 tolerance=None, temp_coefficient=None, min_operating_temp=None, max_operating_temp=None, technology=None):
         super().__init__(name, manufacturer, partnumber)
         self.category = "Resistor"
+        self.technology = technology
         
         # Core constraints
         self.resistance = resistance

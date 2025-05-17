@@ -1,4 +1,4 @@
-from typing import Optional, List, Union
+from typing import Optional, List, Union, ClassVar
 from pydantic import BaseModel, Field, ConfigDict
 
 class CapacitorModel(BaseModel):
@@ -16,6 +16,8 @@ class CapacitorModel(BaseModel):
     min_operating_temp: Optional[str] = Field(None, description="Minimum operating temperature (e.g., '-55°C')")
     max_operating_temp: Optional[str] = Field(None, description="Maximum operating temperature (e.g., '125°C')")
     component_type: str = Field("Capacitor", description="Type of component, fixed to 'Capacitor'")
+    technology: Optional[str] = Field(None, description="Technology, material, build of the capacitor (e.g., 'Ceramic Capacitors', 'THT')")
+    category: ClassVar[str] = "Capacitor"
 
 class InductorModel(BaseModel):
     """Pydantic model for an Inductor."""
@@ -33,6 +35,8 @@ class InductorModel(BaseModel):
     max_operating_temp: Optional[str] = Field(None, description="Maximum operating temperature")
     self_resonant_freq: Optional[str] = Field(None, description="Self-resonant frequency (e.g., '100MHz')")
     component_type: str = Field("Inductor", description="Type of component, fixed to 'Inductor'")
+    technology: Optional[str] = Field(None, description="Technology, material, build of the inductor (e.g., 'Inductors For Digital Audio')")
+    category: ClassVar[str] = "Inductor"
 
 class ResistorModel(BaseModel):
     """Pydantic model for a Resistor."""
@@ -48,6 +52,8 @@ class ResistorModel(BaseModel):
     min_operating_temp: Optional[str] = Field(None, description="Minimum operating temperature")
     max_operating_temp: Optional[str] = Field(None, description="Maximum operating temperature")
     component_type: str = Field("Resistor", description="Type of component, fixed to 'Resistor'")
+    technology: Optional[str] = Field(None, description="Technology, material, build of the resistor (e.g., 'Resis Precision Resistor')")
+    category: ClassVar[str] = "Resistor"
 
 class ComponentBaseModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)

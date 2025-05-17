@@ -1,15 +1,5 @@
-name,manufacturer,partnumber,category,resistance,power_rating,case_code,dimensions,tolerance,temp_coefficient,min_operating_temp,max_operating_temp
-R1,Vishay,CRCW06030000Z0EA,Resistor,0Ω,0.1W,0603,"(1.55, 0.85, 0.5)",±1%,100ppm/°C,-55°C,155°C
-R1,Vishay,CRCW06031100M0JNEA,Resistor,1MΩ,0.1W,0603,"(1.55, 0.85, 0.5)",±5%,±200ppm/°C,-55°C,155°C
-R1,Vishay,CRCW0603100RFKEA,Resistor,100Ω,0.1W,0603,"(1.55, 0.85, 0.5)",±1%,±100ppm/°C,-55°C,155°C
-R1,TE Connectivity,CPF0603B3K01E1,Resistor,3.01kΩ,0.063W,0603,"(1.55, 0.8, 0.55)",±0.1%,±25ppm/°C,-55°C,155°C
-R1,Panasonic,ERJ-3EKF5901V,Resistor,5.9kΩ,0.1W,0603,"(1.6, 0.8, 0.55)",±1%,100ppm/°C,-55°C,155°C
-R1,Vishay,CRCW06031400MFKEA,Resistor,140Ω,0.1W,0603,"(1.55, 0.85, 0.5)",±1%,±100ppm/°C,-55°C,155°C
-R1,Vishay,CRCW0603200KFKEA,Resistor,200kΩ,0.1W,0603,"(1.6, 0.85, 0.5)",±1%,±100ppm/°C,-55°C,125°C
-R1,Vishay,CRCW0603100KFEA,Resistor,100kΩ,0.1W,0603,"(1.6, 0.8, 0.55)",±1%,±100ppm/°C,-55°C,155°C
-R1,Panasonic,ERJ-3EKF7502V,Resistor,75kΩ,0.1W,0603,"(1.6, 0.8, 0.55)",±1%,±100ppm/°C,-55°C,155°C
-R1,Panasonic,ERJ-3EKF1001V,Resistor,1kΩ,0.1W,0603,"(1.6, 0.8, 0.55)",±1%,±100ppm/°C,-55°C,155°C
-R1,Panasonic,ERJ-3EKF1004X,Resistor,1MΩ,0.1W,0603,"(1.6, 0.8, 0.55)",±1%,±100ppm/°C,-55°C,155°C
-R1,Panasonic,ERJ-3EKF1003Y,Resistor,100kΩ,0.1W,0603,"(1.6, 0.8, 0.55)",±1%,±100ppm/°C,-55°C,155°C
-R1,Vishay Dale,CRCW04022R20JNED,Resistor,2.2Ω,0.063W,0402,"(1.0, 0.5, 0.4)",±5%,±200ppm/°C,-55°C,155°C
-R1,Vishay Dale,WSLP25121L500FEA,Resistor,1.5mΩ,3W,2512,"(6.35, 3.18, 0.89)",±1%,±275ppm/°C,-65°C,170°C
+name,manufacturer,partnumber,category,resistance,power_rating,case_code,dimensions,tolerance,temp_coefficient,min_operating_temp,max_operating_temp,technology
+R1,Vishay,CRCW06030000Z0EA,Resistor,0Ω,0.1W,0603,"(1.55, 0.85, 0.5)",Jumper,±100ppm/°C,-55°C,155°C,Resistors Thick Film Surface Mount
+R1,Vishay Dale,CRCW06031100M0JNEA,Resistor,1MΩ,0.1W,0603,"(1.55, 0.85, 0.5)",±5%,±200ppm/°C,-55°C,155°C,Resistors Thick Film Surface Mount
+R1,Vishay,CRCW0603100RFKEA,Resistor,100Ω,0.1W,0603,"(1.55, 0.85, 0.5)",±1%,±100ppm/°C,-55°C,155°C,Resistors Thick Film Surface Mount
+R1,TE Connectivity,CPF0603B3K01E1,Resistor,3.01kΩ,0.063W,0603,"(1.55, 0.8, 0.55)",±0.1%,±25ppm/°C,-55°C,155°C,Resistors Thin Film Precision Resistor
