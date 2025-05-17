@@ -8,7 +8,7 @@ def filter_and_save_partnumbers(input_csv):
     # Read the CSV
     df = pd.read_csv(input_csv)
     # Filter partnumbers with length >= 5
-    filtered = df[df['partnumber'].astype(str).str.len() >= 5]
+    filtered = df[df['partnumber'].astype(str).str.len() >= 5][:5]
     # Save to new CSV
     return filtered 
 
@@ -34,7 +34,8 @@ def test_partnumber_to_component_and_save(input_csv, output_dir):
                         dielectric_material=model.dielectric_material,
                         temp_coefficient=model.temp_coefficient,
                         min_operating_temp=model.min_operating_temp,
-                        max_operating_temp=model.max_operating_temp
+                        max_operating_temp=model.max_operating_temp,
+                        technology=model.technology
                     )
                 elif model.component_type == "Inductor":
                     comp = AppInductor(
@@ -50,7 +51,8 @@ def test_partnumber_to_component_and_save(input_csv, output_dir):
                         tolerance=model.tolerance,
                         min_operating_temp=model.min_operating_temp,
                         max_operating_temp=model.max_operating_temp,
-                        self_resonant_freq=model.self_resonant_freq
+                        self_resonant_freq=model.self_resonant_freq,
+                        technology=model.technology
                     )
                 elif model.component_type == "Resistor":
                     comp = AppResistor(
@@ -64,7 +66,8 @@ def test_partnumber_to_component_and_save(input_csv, output_dir):
                         tolerance=model.tolerance,
                         temp_coefficient=model.temp_coefficient,
                         min_operating_temp=model.min_operating_temp,
-                        max_operating_temp=model.max_operating_temp
+                        max_operating_temp=model.max_operating_temp,
+                        technology=model.technology
                     )
                 else:
                     continue

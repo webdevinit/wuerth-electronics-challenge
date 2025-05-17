@@ -193,6 +193,7 @@ def save_components_to_csv(components: List[Component], output_dir: str):
             "tolerance": getattr(comp, 'tolerance', None),
             "min_operating_temp": getattr(comp, 'min_operating_temp', None),
             "max_operating_temp": getattr(comp, 'max_operating_temp', None),
+            "technology": getattr(comp, 'technology', None),
         }
         if isinstance(comp, AppCapacitor):
             comp_data.update({
@@ -225,7 +226,7 @@ def save_components_to_csv(components: List[Component], output_dir: str):
         cap_cols = [
             "name", "manufacturer", "partnumber", "category", "capacitance", "rated_voltage", 
             "case_code", "dimensions", "tolerance", "dielectric_material", 
-            "temp_coefficient", "min_operating_temp", "max_operating_temp"
+            "temp_coefficient", "min_operating_temp", "max_operating_temp","technology"
         ]
         # Reorder and ensure all specified columns are present
         df_caps = df_caps.reindex(columns=cap_cols)
@@ -238,7 +239,7 @@ def save_components_to_csv(components: List[Component], output_dir: str):
         ind_cols = [
             "name", "manufacturer", "partnumber", "category", "inductance", "rated_current", 
             "case_code", "dimensions", "shielding", "dc_resistance", 
-            "tolerance", "min_operating_temp", "max_operating_temp", "self_resonant_freq"
+            "tolerance", "min_operating_temp", "max_operating_temp", "self_resonant_freq", "technology"
         ]
         df_inds = df_inds.reindex(columns=ind_cols)
         df_inds.to_csv(os.path.join(output_dir, "inductors.csv"), index=False)
@@ -250,13 +251,13 @@ def save_components_to_csv(components: List[Component], output_dir: str):
         res_cols = [
             "name", "manufacturer", "partnumber", "category", "resistance", "power_rating", 
             "case_code", "dimensions", "tolerance", "temp_coefficient", 
-            "min_operating_temp", "max_operating_temp"
+            "min_operating_temp", "max_operating_temp", "technology"
         ]
         df_ress = df_ress.reindex(columns=res_cols)
         df_ress.to_csv(os.path.join(output_dir, "resistors.csv"), index=False)
         print(f"Saved {len(df_ress)} resistors to {os.path.join(output_dir, 'resistors.csv')}")
 
-
+"""
 if __name__ == "__main__":
     excel_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "samples", "bom.xlsx")
     # Output directory changed to the current script's directory
@@ -285,4 +286,4 @@ if __name__ == "__main__":
         else:
             print("No component objects were successfully created.")
     else:
-        print("No data loaded from Excel. Exiting.")
+        print("No data loaded from Excel. Exiting.")"""
