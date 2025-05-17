@@ -64,22 +64,23 @@ async def upload_excel(file: UploadFile = File(...)):
                     # Format result for SSE
                     event_data = {
                         "index": i,
-                        "productType:": component_model_result.productType,
+                        "productType:": component_model_result.category,
                         "manufacturer": component_model_result.manufacturer,
                         "partnumber": partnumber,
-                        "status": "processed",
+                        "status": "identified",
                     }
-                    yield f"data: {json.dumps(event_data)}\n\n"
+                    yield event_data
 
                 except Exception as e:
                     # Handle errors for individual row processing
                     error_data = {
                         "index": i,
-                        "partnumber": component.partnumber if component else "unknown",
-                        "status": "error",
-                        "message": f"Error processing row: {str(e)}"
+                        "productType:": "failed",
+                        "manufacturer": "failed",
+                        "partnumber": partnumber,
+                        "status": f"Error processing row: {str(e)}",
                     }
-                    yield f"data: {json.dumps(error_data)}\n\n"
+                    yield error_data
 
             # Optional: Send a completion message
             yield "data: {\"status\": \"complete\"}\n\n"
