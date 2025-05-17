@@ -33,7 +33,7 @@ export default function PartIdentification({ partData }) {
   if (!partData || partData.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-8 w-full">
-        <div className="text-[72px] w-1/2 leading-[115%] tracking-[-3px] font-semibold text-center text-stone-800">Indetifying Parts</div>
+        <div className="text-[72px] w-1/2 leading-[115%] tracking-[-3px] font-semibold text-center text-stone-800">Identifying Parts</div>
         <div className="flex items-center justify-center h-full space-x-2">
           <div className="text-gray-500 text-2xl">extracting partnumbers from file...</div>{" "}
           <Loader2
