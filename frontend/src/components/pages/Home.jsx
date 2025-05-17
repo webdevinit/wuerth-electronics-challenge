@@ -9,60 +9,62 @@ function Home({ onStart, onInitialParts, onUpdateParts }) {
   const [parts, setParts] = useState([]);
 
   const handleFileSelected = async (file) => {
-    onStart(); // ← direkt zur Identifikation wechseln
+    onStart(); // direkt zur PartIdentification-Komponente wechseln
 
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch("http://localhost:8000/upload-excel", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      // 1. Upload Excel und bekomme die Partnummern
+      const parseRes = await fetch("http://localhost:8000/parse-excel", {
+        method: "POST",
+        body: formData,
+      });
 
-    if (!res.body) {
-      console.error("Keine Streaming-Antwort erhalten");
-      return;
-    }
+      const json = await parseRes.json();
+      const partNumbers = json.partnumbers || [];
 
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder("utf-8");
-    let buffer = "";
-    let partList = [];
+      // 2. Baue initiale Pending-Liste
+      let partList = partNumbers.map((pn) => ({
+        id: pn,
+        partNumber: pn,
+        status: "pending",
+      }));
 
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
+      onInitialParts(partList); // Zeige pending list
 
-      buffer += decoder.decode(value, { stream: true });
+      // 3. Iteriere über jede Partnummer und identifiziere sie einzeln
+      for (const part of partList) {
+        try {
+          // zuerst "searching" markieren
+          partList = partList.map((p) => (p.id === part.id ? { ...p, status: "searching" } : p));
+          onUpdateParts([...partList]);
 
-      const lines = buffer.split("\n\n");
-      buffer = lines.pop() || "";
+          const res = await fetch(`http://localhost:8000/identify-part?partnumber=${encodeURIComponent(part.partNumber)}`);
+          const data = await res.json();
 
-      for (const line of lines) {
-        console.log("LINE PRINT");
+          console.log("Identified part:", data);
 
-        console.log(lines);
+          partList = partList.map((p) =>
+            p.id === part.id
+              ? {
+                  ...p,
+                  productType: data.productType,
+                  manufacturer: data.manufacturer,
+                  status: data.status,
+                }
+              : p
+          );
 
-        if (!line.startsWith("data: ")) continue;
-        const jsonData = JSON.parse(line.replace("data: ", ""));
-
-        if (jsonData.status === "initial") {
-          partList = jsonData.partnumbers.map((pn) => ({
-            id: pn,
-            partNumber: pn,
-            status: "pending",
-          }));
-          onInitialParts(partList); // ← initial zeigen
-        } else if (jsonData.status === "processed") {
-          const updated = partList.map((p) => (p.id === jsonData.partnumber ? { ...p, ...jsonData.data, status: "identified" } : p));
-          partList = updated;
-          onUpdateParts(updated);
-        } else if (jsonData.status === "error") {
-          const updated = partList.map((p) => (p.id === jsonData.partnumber ? { ...p, status: "failed" } : p));
-          partList = updated;
-          onUpdateParts(updated);
+          onUpdateParts([...partList]);
+        } catch (err) {
+          console.error("Fehler bei Identifikation:", err);
+          partList = partList.map((p) => (p.id === part.id ? { ...p, status: "failed" } : p));
+          onUpdateParts([...partList]);
         }
       }
+    } catch (err) {
+      console.error("Fehler beim Parsen der Datei:", err);
     }
   };
 

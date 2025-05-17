@@ -19,7 +19,56 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+@app.post("/parse-excel")
+async def parse_excel(file: UploadFile = File(...)):
+    if not file.filename.endswith((".xls", ".xlsx")):
+        raise HTTPException(status_code=400, detail="Bitte lade eine gültige Excel-Datei hoch.")
+    try:
+        contents = await file.read()
+        excel_data = pd.read_excel(BytesIO(contents), sheet_name=None)
+        all_rows = []
+        for _, df in excel_data.items():
+            df = df.fillna('')
+            all_rows.extend(df.to_dict('records'))
 
+        all_components = []
+        for row in all_rows:
+            components_from_row = process_bom_data([row])
+            if components_from_row:
+                all_components.extend(components_from_row)
+
+        # Maximal 20 Partnummern extrahieren
+        partnumbers = [comp.partnumber for comp in all_components[:20]]
+
+        return {"partnumbers": partnumbers}
+
+    except Exception as e:
+        print("❌ Fehler beim Parsen:", traceback.format_exc())
+        raise HTTPException(status_code=500, detail=f"Fehler beim Parsen: {str(e)}")
+    
+@app.get("/identify-part")
+async def identify_part(partnumber: str):
+    try:
+        result = get_component_model_from_partnumber(partnumber)
+        response = {
+            "id": partnumber,
+            "partNumber": partnumber,
+            "productType": result.category,
+            "manufacturer": result.manufacturer,
+            "status": "identified"
+        }
+        return JSONResponse(content=response)
+
+    except Exception as e:
+        print("❌ Fehler beim Identifizieren:", traceback.format_exc())
+        error_response = {
+            "id": partnumber,
+            "partNumber": partnumber,
+            "status": "failed",
+            "error": str(e)
+        }
+        return JSONResponse(content=error_response, status_code=200)
+    
 @app.post("/upload-excel", response_class=StreamingResponse)
 async def upload_excel(file: UploadFile = File(...)):
     if not file.filename.endswith((".xls", ".xlsx")):
