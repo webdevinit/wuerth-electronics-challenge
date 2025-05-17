@@ -118,3 +118,4 @@ class Resistor(Component):
         self.temp_coefficient = temp_coefficient
         self.min_operating_temp = min_operating_temp
         self.max_operating_temp = max_operating_temp
+
