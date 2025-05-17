@@ -93,7 +93,7 @@ export function PartListCombobox({ parts, onSelect }) {
                       <div className={`flex items-center gap-4 ${selectionMode ? "px-11" : "px-3"}`}>
                         <div>
                           {part.status === "searching" ? (
-                            <div className="font-medium text-neutral-500">{part.partNumber}</div>
+                            <div className="font-medium text-neutral-600">{part.partNumber}</div>
                           ) : part.status === "failed" ? (
                             <div className="font-light text-neutral-300">{part.partNumber}</div>
                           ) : (
@@ -101,7 +101,7 @@ export function PartListCombobox({ parts, onSelect }) {
                           )}
                         </div>
                         <div className="flex-shrink-0">
-                          {part.status !== "failed" && <Loader2 className="h-4 w-4 animate-spin text-neutral-500" />}
+                          {part.status === "searching" && <Loader2 className="h-4 w-4 animate-spin text-neutral-600" />}
                           {part.status === "failed" && (
                             <div className="flex items-center gap-1">
                               <X className="h-4 w-4 text-red-300" /> <p className="text-red-300">failed</p>

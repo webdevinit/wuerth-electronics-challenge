@@ -32,7 +32,7 @@ const FileDropArea = ({ onSelectFile }) => {
         <Upload />
       </div>
       <p className="text-gray-800 font-semibold text-lg">
-        Datei hier her ziehen, oder <span className="text-red-500 underline">auswählen</span>
+        Datei hier her ziehen, oder <span className="text-[#D00C17] underline">auswählen</span>
       </p>
       <p className="text-sm text-gray-500 mt-2">Unterstützte Formate: xlsx</p>
       <input type="file" accept="application/pdf" ref={inputRef} onChange={handleFileChange} hidden />

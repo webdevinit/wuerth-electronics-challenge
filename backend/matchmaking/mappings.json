@@ -8,8 +8,8 @@
     },
     "optional": {
       "Tolerance": null,
-      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C)",
-      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C)"
+      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C) Minimum",
+      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C) Maximum"
     }
   },
   "Aluminum Polymer Capacitors": {
@@ -20,8 +20,8 @@
     },
     "optional": {
       "Tolerance": null,
-      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C)",
-      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C)"
+      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C) Minimum",
+      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C) Maximum"
     }
   },
   "Aluminum Hybrid Polymer Capacitors": {
@@ -44,8 +44,8 @@
     },
     "optional": {
       "Tolerance": null,
-      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C)",
-      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C)"
+      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C) Minimum",
+      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C) Maximum"
     }
   },
   "Film Capacitors": {
@@ -56,8 +56,8 @@
     },
     "optional": {
       "Tolerance": null,
-      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C)",
-      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C)"
+      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C) Minimum",
+      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C) Maximum"
     }
   },
   "Supercapacitors (EDLCs)": {
@@ -68,8 +68,8 @@
     },
     "optional": {
       "Tolerance": null,
-      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C)",
-      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C)"
+      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C) Minimum",
+      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C) Maximum"
     }
   }
 
@@ -85,8 +85,8 @@
       "Tolerance": null,
       "DC Resistance": "DC_Resistance (\u03a9)",
       "Self-Resonant Frequency": "Self_Resonant_Frequency (MHz)",
-      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C)",
-      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C)"
+      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C) Minimum",
+      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C) Maximum"
     }
   }, 
 
@@ -161,7 +161,6 @@
     }
   }
 },
-
     "Resistors": {
     "Thick Film Resistors": {
     "core": {
@@ -171,7 +170,6 @@
     },
     "optional": {
       "Tolerance": null,
-      "Temperature Coefficient": "Temperature_Coefficient_of_Resistance_Range (ppm/\u00b0C)",
       "Operating Temperature (Minimum)": null,
       "Operating Temperature (Maximum)": null
     }
@@ -185,7 +183,6 @@
   },
   "optional": {
     "Tolerance": null,
-    "Temperature Coefficient": "Temperature_Coefficient_of_Resistance_Range (ppm/\u00b0C)",
     "Operating Temperature (Minimum)": null,
     "Operating Temperature (Maximum)": null
   }

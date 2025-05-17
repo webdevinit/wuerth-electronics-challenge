@@ -1,13 +1,13 @@
 from typing import List, Dict, Any, Union
-import operator
 import json
-import os
 
 class Component:
     def __init__(self, attributes: Dict[str, Any]):
         self.attributes = attributes
 
-    def get(self, key: str):
+    def get(self, key):
+        if isinstance(key, list):
+            return [self.attributes.get(k) for k in key]
         return self.attributes.get(key)
     
     def __repr__(self):
@@ -86,8 +86,6 @@ class MatchingRule:
     def __repr__(self):
         return f"<Rule {self.rule_key} {self.operator_str} on {self.attribute_key}>"
 
-
-
 class MatchingRules:
     def __init__(self, rules_config: Dict, mapping_config: Dict):
         self.rules_config = rules_config
@@ -142,13 +140,13 @@ class MatchingEngine:
         results.sort(key=lambda x: x[1], reverse=True)
         return results[:top_k]
     
-with open("backend/matchmaking/matching_rules.json", "r") as f:
+with open("matchmaking/matching_rules.json", "r") as f:
     matching_rules = json.load(f)
 
-with open("backend/matchmaking/mappings.json", "r") as f:
+with open("matchmaking/mappings.json", "r") as f:
     mappings = json.load(f)
     
-with open("backend/matchmaking/components.json", "r") as f:
+with open("matchmaking/components.json", "r") as f:
     components = json.load(f)
     components = [Component(comp) for comp in components]
            

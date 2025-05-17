@@ -47,7 +47,7 @@ export default function PartIdentification({ partData }) {
 
   return (
     <div className="flex flex-col items-center justify-center gap-8 w-full">
-      <div className="text-[72px] w-1/2 leading-[115%] tracking-[-3px] font-semibold text-center text-stone-800">Indetifying Parts</div>
+      <div className="text-[72px] w-1/2 leading-[115%] tracking-[-3px] font-semibold text-center text-stone-800">Identifying Parts</div>
 
       <div className="p-6 space-y-6">
         <PartListCombobox parts={partData} onSelect={(part) => console.log("Selected", part)} />

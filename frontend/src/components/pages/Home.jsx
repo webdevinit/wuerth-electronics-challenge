@@ -118,7 +118,7 @@ function Home({ onStart, onInitialParts, onUpdateParts }) {
       <div className="text-[72px] w-1/2 leading-[115%] tracking-[-3px] font-semibold text-center text-stone-800">
         Upload BOM <br />
         to find matching <br />
-        <span className="text-red-600">Würth Elektronik </span>parts
+        <span className="text-[#D00C17]">Würth Elektronik </span>parts
       </div>
       <div className="w-1/2 flex flex-col gap-2">
         <div className="font-semibold text-neutral-600">xlsx file upload</div>

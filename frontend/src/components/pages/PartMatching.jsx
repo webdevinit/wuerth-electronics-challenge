@@ -1,8 +1,8 @@
-import { PartListCombobox } from "@/components/part-identification/PartListCombobox";
-import { Loader2 } from "lucide-react";
+import { SelectedPartListCombobox } from "@/components/part-matching/SelectedPartListCombobox";
+import matchingData from "@/data/matchingData";
 
-export default function PartIdentification({ matchingData, selectedPartData }) {
-  if (!matchingData || matchingData.length === 0) {
+export default function PartMatching() {
+  /*if (!matchingData || matchingData.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-8 w-full">
         <div className="text-[72px] w-1/2 leading-[115%] tracking-[-3px] font-semibold text-center text-stone-800">Product Matches</div>
@@ -16,14 +16,14 @@ export default function PartIdentification({ matchingData, selectedPartData }) {
         </div>
       </div>
     );
-  }
+  }*/
 
   return (
     <div className="flex flex-col items-center justify-center gap-8 w-full">
       <div className="text-[72px] w-1/2 leading-[115%] tracking-[-3px] font-semibold text-center text-stone-800">Product Matches</div>
 
       <div className="p-6 space-y-6">
-        <PartListCombobox parts={partData} onSelect={(part) => console.log("Selected", part)} />
+        <SelectedPartListCombobox parts={matchingData} />
       </div>
     </div>
   );

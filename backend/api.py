@@ -1,14 +1,13 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse, StreamingResponse
+from matchmaking.matchmaking import match_wuerth_components, rules
 import pandas as pd
 from io import BytesIO
-from main_processor_input import process_bom_data
+from main_processor_input import load_excel_data, extract_serial_numbers
 from openaispecsheetsearch import get_component_model_from_partnumber
 import json
 from fastapi.middleware.cors import CORSMiddleware
 import traceback
-
-
 
 app = FastAPI()
 
@@ -23,28 +22,16 @@ app.add_middleware(
 async def parse_excel(file: UploadFile = File(...)):
     if not file.filename.endswith((".xls", ".xlsx")):
         raise HTTPException(status_code=400, detail="Bitte lade eine gültige Excel-Datei hoch.")
+
     try:
-        contents = await file.read()
-        excel_data = pd.read_excel(BytesIO(contents), sheet_name=None)
-        all_rows = []
-        for _, df in excel_data.items():
-            df = df.fillna('')
-            all_rows.extend(df.to_dict('records'))
-
-        all_components = []
-        for row in all_rows:
-            components_from_row = process_bom_data([row])
-            if components_from_row:
-                all_components.extend(components_from_row)
-
-        # Maximal 20 Partnummern extrahieren
-        partnumbers = [comp.partnumber for comp in all_components[:20]]
-
-        return {"partnumbers": partnumbers}
-
+        content = await file.read()
+        rows = load_excel_data(content)
+        if not rows:
+            raise HTTPException(status_code=400, detail="Keine BOM-Daten in der Excel-Datei gefunden.")
+        serial_numbers = extract_serial_numbers(rows)
+        return {"partnumbers": serial_numbers}
     except Exception as e:
-        print("❌ Fehler beim Parsen:", traceback.format_exc())
-        raise HTTPException(status_code=500, detail=f"Fehler beim Parsen: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Fehler beim Verarbeiten der Datei: {str(e)}")
     
 @app.get("/identify-part")
 async def identify_part(partnumber: str):
@@ -68,74 +55,87 @@ async def identify_part(partnumber: str):
             "error": str(e)
         }
         return JSONResponse(content=error_response, status_code=200)
-    
-@app.post("/upload-excel", response_class=StreamingResponse)
-async def upload_excel(file: UploadFile = File(...)):
-    if not file.filename.endswith((".xls", ".xlsx")):
-        raise HTTPException(status_code=400, detail="Bitte lade eine gültige Excel-Datei hoch.")
-    try:
-        contents = await file.read()
-        print (f"Received file: {file.filename}, size: {len(contents)} bytes")  # Debug print
-        excel_data = pd.read_excel(BytesIO(contents), sheet_name=None) # Limit to first 5 sheets
-        all_rows = []
-        for _, df in excel_data.items():
-            df = df.fillna('')
-            all_rows.extend(df.to_dict('records'))
+@app.post("/find-components")
+def find_components():
+    source = {
+        "Order_Code": "890324025031CS",
+        "Product_Group": "Capacitors",
+        "Product_Series": "WCAP-FTX2 Film Capacitors",
+        "Product_Family": "Film Capacitors",
+        "Capacitance (µF)": 0.27,
+        "Rated_Voltage (V)": 275,
+        "Rated_Voltage_2 (V)": 560,
+        "Rate_Of_Voltage_Rise (V/µs)": 250,
+        "Dissipation_Factor (%)": 3,
+        "Operating_Temperature (°C) Minimum": -40,
+        "Operating_Temperature (°C) Maximum": 105,
+        "Safety_Class": "X2",
+        "Pitch (mm)": 15,
+        "Length (mm)": 18,
+        "Width (mm)": 7.5,
+        "Height (mm)": 14.5,
+        "Size_Code": "Pitch 15 mm",
+    }
 
-        # Process all rows at once to get the complete list of components
-        all_components = []
-        for row in all_rows:
-            components_from_row = process_bom_data([row])
-            if components_from_row:
-                all_components.extend(components_from_row)
-                
-        all_components = all_components[:5]
+    matches = match_wuerth_components(source, top_k=5)
 
-        results = []
-        async def event_generator(components_list):
-            # Send initial message with total count and basic info
-            initial_data = {
-                "status": "initial",
-                "total_components": len(components_list),
-                "partnumbers": [comp.partnumber for comp in components_list]
-            }
-            yield f"data: {json.dumps(initial_data)}\n\n"
+    json_response = {
+        "part_competitor": {
+            "id": "123456789",
+            "manufacturer": "Siemens",
+            "partnumber": "123456789",
+            "specs": [
+                {
+                    "attribute": attr,
+                    "value": source.get(attr)
+                } for attr in source.keys()
+            ]
+        },
+        "wuerth_suggestions": []
+    }
 
-            for i, component in enumerate(components_list):
-                try:
-                    partnumber = component.partnumber
-                    print(f"Processing partnumber: {partnumber}") # Debug print
+    json_response["wuerth_suggestions"] = []
 
-                    # Get component model from part number
-                    component_model_result = get_component_model_from_partnumber(partnumber)
-                    results.append(component_model_result)
+    for match_component, _ in matches:
+        suggestion = {
+            "Order_Code": match_component.get("Order_Code"),
+            "specs": []
+        }
 
-                    # Format result for SSE
-                    event_data = {
-                        "id": i,
-                        "productType:": component_model_result.category,
-                        "manufacturer": component_model_result.manufacturer,
-                        "partnumber": partnumber,
-                        "status": "identified",
-                    }
-                    yield json.dumps(event_data)
+        for rule in rules.get_rules_for(source["Product_Group"], source["Product_Family"]):
+            attr_keys = rule.attribute_key if isinstance(rule.attribute_key, list) else [rule.attribute_key]
 
-                except Exception as e:
-                    # Handle errors for individual row processing
-                    error_data = {
-                        "id": i,
-                        "productType:": "failed",
-                        "manufacturer": "failed",
-                        "partnumber": partnumber,
-                        "status": f"Error processing row: {str(e)}",
-                    }
-                    yield json.dumps(error_data)
+            for attr in attr_keys:
+                source_value = source.get(attr)
+                match_value = match_component.get(attr)
 
-            # Optional: Send a completion message
-            yield "data: {\"status\": \"complete\"}\n\n"
+                if source_value is None or match_value is None:
+                    continue
 
-        return StreamingResponse(event_generator(all_components), media_type="text/event-stream")
+                outcome = "failed"
 
-    except Exception as e:
-        print("❌ Fehler:", traceback.format_exc())  # <- DAS HINZUFÜGEN
-        raise HTTPException(status_code=500, detail=f"Fehler beim Verarbeiten der Excel-Datei: {str(e)}")
+                if isinstance(source_value, (int, float)) and isinstance(match_value, (int, float)):
+                    # Consider operator semantics
+                    if rule.operator_str == "=":
+                        diff = abs(source_value - match_value) / max(abs(source_value), 1)
+                        if diff < 0.15:
+                            outcome = "tolerated"
+                    elif rule.operator_str == ">=":
+                        outcome = "good" if match_value >= source_value else "failed"
+                    elif rule.operator_str == "<=":
+                        outcome = "good" if match_value <= source_value else "failed"
+                else:
+                    # fallback to equality check for non-numeric
+                    if source_value == match_value:
+                        outcome = "good"
+
+                suggestion["specs"].append({
+                    "attribute": attr,
+                    "values": [match_value, source_value],
+                    "rule_outcome": outcome,
+                    "operator": rule.operator_str
+                })
+
+        json_response["wuerth_suggestions"].append(suggestion)
+
+    return json_response
