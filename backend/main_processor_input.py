@@ -42,7 +42,7 @@ prompt = ChatPromptTemplate.from_messages([
         "You are an expert in electronic components. For each row in the following Markdown BOM table, "
         "identify the component and extract a concise identifier for it. "
         "Return a list of serial numbers, one per component, that uniquely represents each component row. "
-        "Do not include any other information or explanations. Just serial numbers."
+        "Do not include any other information or explanations. Just serial numbers longer than 5 characters. "
     ),
     ("human", "{markdown_chunk}")
 ])
@@ -70,7 +70,11 @@ def extract_serial_numbers(data: List[Dict[str, Any]], chunk_size: int = 200) ->
         markdown_chunk = pd.DataFrame(chunk).to_markdown(index=False)
         try:
             response = chain.invoke({"markdown_chunk": markdown_chunk})
+            filtered_serials = [s for s in response.serial_numbers if len(s) >= 5]
+            serials.extend(filtered_serials)
             serials.extend(response.serial_numbers)
         except Exception as e:
             print(f"❌ Error in chunk {idx + 1}: {e}")
-    return serials
+            
+    unique_serials = list(dict.fromkeys(serials))
+    return unique_serials

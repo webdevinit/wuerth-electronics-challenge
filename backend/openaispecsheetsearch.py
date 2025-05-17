@@ -1,4 +1,3 @@
-from ssl import OP_ENABLE_KTLS
 from dotenv import load_dotenv
 import os
 from openai import AzureOpenAI, OpenAI
