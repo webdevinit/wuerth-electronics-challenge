@@ -1,0 +1,43 @@
+{
+  "Capacitors": {
+    "core": {
+      "Capacitance": "=",
+      "Rated Voltage": ">=",
+      "Dimensions": "="
+    },
+    "optional": {
+      "Tolerance": "<=",
+      "Dielectric Material / Temperature Coefficient": "=",
+      "Operating Temperature (Minimum)": "<=",
+      "Operating Temperature (Maximum)": ">="
+    }
+   },
+  "Power Magnetics": {
+    "core": {
+      "Inductance": "=",
+      "Rated Current": ">=",
+      "Dimensions": "="
+    },
+    "optional": {
+      "Shielding": "=",
+      "DC Resistance": "<=",
+      "Tolerance": "<=",
+      "Operating Temperature (Minimum)": "<=",
+      "Operating Temperature (Maximum)": ">=",
+      "Self-Resonant Frequency": ">="
+    }
+  },
+  "Resistors": {
+    "core": {
+      "Resistance": "=",
+      "Power Rating": ">=",
+      "Dimensions": "="
+    },
+    "optional": {
+      "Tolerance": "<=",
+      "Temperature Coefficient": "=",
+      "Operating Temperature (Minimum)": "<=",
+      "Operating Temperature (Maximum)": ">="
+    }
+   }
+}

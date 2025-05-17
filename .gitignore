@@ -23,7 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-requirements.txt
 venv
 venv/
 env
