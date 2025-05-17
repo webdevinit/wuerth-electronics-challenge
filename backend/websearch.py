@@ -27,7 +27,7 @@ if __name__ == "__main__":
     _, partnumbers = read_bom_results(bom_results_dir)
 
     for partnumber in partnumbers:
-        params["q"] = partnumber
+        params["q"] = str(partnumber) + ":pdf"
         search = GoogleSearch(params)
         results = search.get_dict()
         links = get_search_links(results)
@@ -40,5 +40,5 @@ if __name__ == "__main__":
     df = pd.DataFrame(search_results, columns=columns)
     
     # Save to CSV
-    output_path = os.path.join(os.path.dirname(__file__), "search_results.csv")
+    output_path = os.path.join(os.path.dirname(__file__), "search_results_datasheets.csv")
     df.to_csv(output_path, index=False)

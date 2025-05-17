@@ -1,4 +1,4 @@
-# Scrapy settings for scrapeshops project
+# Scrapy settings for dealwithshops project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -7,19 +7,35 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = "scrapeshops"
+BOT_NAME = "dealwithshops"
 
-SPIDER_MODULES = ["scrapeshops.spiders"]
-NEWSPIDER_MODULE = "scrapeshops.spiders"
+SPIDER_MODULES = ["dealwithshops.spiders"]
+NEWSPIDER_MODULE = "dealwithshops.spiders"
 
 ADDONS = {}
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = "scrapeshops (+http://www.yourdomain.com)"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+COOKIES_ENABLED = True
+DOWNLOAD_DELAY = 2
+DEFAULT_REQUEST_HEADERS = {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "Upgrade-Insecure-Requests": "1",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
+}
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
+
+DOWNLOAD_TIMEOUT = 30 # Timeout in seconds (e.g., 30 seconds)
+RETRY_TIMES = 2 # Reduce default retry times if needed
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -47,13 +63,13 @@ ROBOTSTXT_OBEY = True
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    "scrapeshops.middlewares.ScrapeshopsSpiderMiddleware": 543,
+#    "dealwithshops.middlewares.DealwithshopsSpiderMiddleware": 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    "scrapeshops.middlewares.ScrapeshopsDownloaderMiddleware": 543,
+#    "dealwithshops.middlewares.DealwithshopsDownloaderMiddleware": 543,
 #}
 
 # Enable or disable extensions
@@ -65,7 +81,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    "scrapeshops.pipelines.ScrapeshopsPipeline": 300,
+#    "dealwithshops.pipelines.DealwithshopsPipeline": 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
