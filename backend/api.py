@@ -1,25 +1,73 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 import pandas as pd
 from io import BytesIO
+from main_processor_input import process_bom_data
+from openaispecsheetsearch import get_component_model_from_partnumber
+import json
 
 app = FastAPI()
 
-@app.post("/upload-excel", response_class=PlainTextResponse)
+@app.post("/upload-excel", response_class=StreamingResponse)
 async def upload_excel(file: UploadFile = File(...)):
-    if not file.filename.endswith(('.xls', '.xlsx')):
-        raise HTTPException(status_code=400, detail="Please upload a valid Excel file.")
-
+    if not file.filename.endswith((".xls", ".xlsx")):
+        raise HTTPException(status_code=400, detail="Bitte lade eine gültige Excel-Datei hoch.")
     try:
         contents = await file.read()
-        excel_data = pd.read_excel(BytesIO(contents), sheet_name=None)  # Read all sheets
-        text_output = ""
+        excel_data = pd.read_excel(BytesIO(contents), sheet_name=None)
+        all_rows = []
+        for _, df in excel_data.items():
+            df = df.fillna('')
+            all_rows.extend(df.to_dict('records'))
 
-        for sheet_name, df in excel_data.items():
-            text_output += f"Sheet: {sheet_name}\n"
-            text_output += df.to_string(index=False)
-            text_output += "\n\n"
+        # Process all rows at once to get the complete list of components
+        all_components = []
+        for row in all_rows:
+            components_from_row = process_bom_data([row])
+            if components_from_row:
+                all_components.extend(components_from_row)
 
-        return text_output.strip()
+        async def event_generator(components_list):
+            # Send initial message with total count and basic info
+            initial_data = {
+                "status": "initial",
+                "total_components": len(components_list),
+                "partnumbers": [comp.partnumber for comp in components_list]
+            }
+            yield f"data: {json.dumps(initial_data)}\n\n"
+
+            for i, component in enumerate(components_list):
+                try:
+                    partnumber = component.partnumber
+                    print(f"Processing partnumber: {partnumber}") # Debug print
+
+                    # Get component model from part number
+                    component_model_result = get_component_model_from_partnumber(partnumber)
+
+                    # Format result for SSE
+                    event_data = {
+                        "index": i,
+                        "partnumber": partnumber,
+                        "status": "processed",
+                        "data": component_model_result # Include the result from the new function
+                    }
+                    yield f"data: {json.dumps(event_data)}\n\n"
+
+                except Exception as e:
+                    # Handle errors for individual row processing
+                    error_data = {
+                        "index": i,
+                        "partnumber": component.partnumber if component else "unknown",
+                        "status": "error",
+                        "message": f"Error processing row: {str(e)}"
+                    }
+                    yield f"data: {json.dumps(error_data)}\n\n"
+
+            # Optional: Send a completion message
+            yield "data: {\"status\": \"complete\"}\n\n"
+
+        return StreamingResponse(event_generator(all_components), media_type="text/event-stream")
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to process the Excel file: {str(e)}")
+        # Handle initial file reading/parsing errors
+        raise HTTPException(status_code=500, detail=f"Fehler beim Verarbeiten der Excel-Datei: {str(e)}")
