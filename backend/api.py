@@ -5,8 +5,20 @@ from io import BytesIO
 from main_processor_input import process_bom_data
 from openaispecsheetsearch import get_component_model_from_partnumber
 import json
+from fastapi.middleware.cors import CORSMiddleware
+import traceback
+
+
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # oder "*" für alle Domains (unsicher in Produktion)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/upload-excel", response_class=StreamingResponse)
 async def upload_excel(file: UploadFile = File(...)):
@@ -14,7 +26,8 @@ async def upload_excel(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="Bitte lade eine gültige Excel-Datei hoch.")
     try:
         contents = await file.read()
-        excel_data = pd.read_excel(BytesIO(contents), sheet_name=None)
+        print (f"Received file: {file.filename}, size: {len(contents)} bytes")  # Debug print
+        excel_data = pd.read_excel(BytesIO(contents), sheet_name=None) # Limit to first 5 sheets
         all_rows = []
         for _, df in excel_data.items():
             df = df.fillna('')
@@ -26,6 +39,9 @@ async def upload_excel(file: UploadFile = File(...)):
             components_from_row = process_bom_data([row])
             if components_from_row:
                 all_components.extend(components_from_row)
+                
+        all_components = all_components[:5]
+
 
         async def event_generator(components_list):
             # Send initial message with total count and basic info
@@ -69,5 +85,5 @@ async def upload_excel(file: UploadFile = File(...)):
         return StreamingResponse(event_generator(all_components), media_type="text/event-stream")
 
     except Exception as e:
-        # Handle initial file reading/parsing errors
+        print("❌ Fehler:", traceback.format_exc())  # <- DAS HINZUFÜGEN
         raise HTTPException(status_code=500, detail=f"Fehler beim Verarbeiten der Excel-Datei: {str(e)}")

@@ -3,6 +3,13 @@ import { useRef } from "react";
 
 const FileDropArea = ({ onSelectFile }) => {
   const inputRef = useRef();
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file && onSelectFile) {
+      onSelectFile(file); // ✅ Datei an Callback übergeben
+    }
+  };
 
   const openFileDialog = () => {
     inputRef.current?.click();
@@ -11,13 +18,14 @@ const FileDropArea = ({ onSelectFile }) => {
   const handleFileChange = (e) => {
     const files = e.target.files;
     if (files && files[0]) {
-      onSelectFile(files[0]);
+      onSelectFile(files[0]); // ✅ Auch bei manueller Auswahl
     }
   };
 
   return (
     <div
       onClick={openFileDialog}
+      onDrop={handleDrop}
       className="border border-dashed border-gray-300 rounded-xl p-12 text-center cursor-pointer hover:bg-gray-50 transition-colors shadow-xs duration-150 gap-2 flex flex-col"
     >
       <div className="flex items-center justify-center">

@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function PartIdentification({ partData }) {
   const [parts, setParts] = useState(partData || []);
 
-  const handleFileUpload = async (file) => {
+  /*const handleFileUpload = async (file) => {
     const res = await fetch("/api/identify", {
       method: "POST",
       body: file,
@@ -31,7 +31,7 @@ export default function PartIdentification({ partData }) {
 
       partial = "";
     }
-  };
+  };*/
 
   return (
     <div className="p-6 space-y-6">
