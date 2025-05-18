@@ -1,0 +1,192 @@
+{
+  "Capacitors": {
+  "Aluminum Electrolytic Capacitors": {
+    "core": {
+      "Capacitance": "Capacitance (\u00b5F)",
+      "Rated Voltage": "Rated_Voltage (V)",
+      "Dimensions": ["Length (mm)", "Diameter (mm)", "Pitch (mm)"]
+    },
+    "optional": {
+      "Tolerance": null,
+      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C) Minimum",
+      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C) Maximum"
+    }
+  },
+  "Aluminum Polymer Capacitors": {
+    "core": {
+      "Capacitance": "Capacitance (\u00b5F)",
+      "Rated Voltage": "Rated_Voltage (V)",
+      "Dimensions": ["Length (mm)", "Diameter (mm)", "Pitch (mm)"]
+    },
+    "optional": {
+      "Tolerance": null,
+      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C) Minimum",
+      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C) Maximum"
+    }
+  },
+  "Aluminum Hybrid Polymer Capacitors": {
+    "core": {
+      "Capacitance": "Capacitance (\u00b5F)",
+      "Rated Voltage": "Rated_Voltage (V)",
+      "Dimensions": ["Length (mm)", "Diameter (mm)"]
+    },
+    "optional": {
+      "Tolerance": null,
+      "Operating Temperature (Minimum)": null,
+      "Operating Temperature (Maximum)": null
+    }
+  },
+  "MLCCs - Multilayer Ceramic Chip Capacitors": {
+    "core": {
+      "Capacitance": "Capacitance (\u00b5F)",
+      "Rated Voltage": "Rated_Voltage (V)",
+      "Dimensions": ["Length (mm)", "Height (mm)", "Width (mm)"]
+    },
+    "optional": {
+      "Tolerance": null,
+      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C) Minimum",
+      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C) Maximum"
+    }
+  },
+  "Film Capacitors": {
+    "core": {
+      "Capacitance": "Capacitance (\u00b5F)",
+      "Rated Voltage": "Rated_Voltage (V)",
+      "Dimensions": ["Length (mm)", "Diameter (mm)", "Height (mm)", "Width (mm)", "Pitch (mm)"]
+    },
+    "optional": {
+      "Tolerance": null,
+      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C) Minimum",
+      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C) Maximum"
+    }
+  },
+  "Supercapacitors (EDLCs)": {
+    "core": {
+      "Capacitance": "Capacitance (\u00b5F)",
+      "Rated Voltage": "Rated_Voltage (V)",
+      "Dimensions": ["Length (mm)", "Diameter (mm)", "Pitch (mm)"]
+    },
+    "optional": {
+      "Tolerance": null,
+      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C) Minimum",
+      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C) Maximum"
+    }
+  }
+
+    },
+    "Power Magnetics": {
+    "Shielded Power Inductors": {
+    "core": {
+      "Inductance": "Inductance (\u00b5H)",
+      "Rated Current": "Rated_Current (A)",
+      "Dimensions": ["Size_Code", "Length (mm)", "Height (mm)", "Width (mm)"]
+    },
+    "optional": {
+      "Tolerance": null,
+      "DC Resistance": "DC_Resistance (\u03a9)",
+      "Self-Resonant Frequency": "Self_Resonant_Frequency (MHz)",
+      "Operating Temperature (Minimum)": "Operating_Temperature (\u00b0C) Minimum",
+      "Operating Temperature (Maximum)": "Operating_Temperature (\u00b0C) Maximum"
+    }
+  }, 
+
+  "Unshielded Power Inductors": {
+    "core": {
+      "Inductance": "Inductance (\u00b5H)",
+      "Rated Current": "Rated_Current (A)",
+      "Dimensions": ["Size_Code", "Length (mm)", "Height (mm)", "Width (mm)"]
+    },
+    "optional": {
+      "Tolerance": null,
+      "DC Resistance": "DC_Resistance (\u03a9)",
+      "Self-Resonant Frequency": "Self_Resonant_Frequency (MHz)",
+      "Operating Temperature (Minimum)": null,
+      "Operating Temperature (Maximum)": null
+    }
+  },
+  "High Voltage Power Inductors": {
+    "core": {
+      "Inductance": "Inductance (\u00b5H)",
+      "Rated Current": "Rated_Current (A)",
+      "Dimensions": ["Size_Code", "Length (mm)", "Height (mm)", "Width (mm)"]
+    },
+    "optional": {
+      "Tolerance": null,
+      "DC Resistance": "DC_Resistance (\u03a9)",
+      "Self-Resonant Frequency": "Self_Resonant_Frequency (MHz)",
+      "Operating Temperature (Minimum)": null,
+      "Operating Temperature (Maximum)": null
+    }
+  },
+  "Coupled Power Inductors": {
+    "core": {
+      "Inductance": "Inductance (\u00b5H)",
+      "Rated Current": "Rated_Current (A)",
+      "Dimensions": ["Size_Code", "Length (mm)", "Height (mm)", "Width (mm)"]
+    },
+    "optional": {
+      "Tolerance": null,
+      "DC Resistance": "DC_Resistance (\u03a9)",
+      "Self-Resonant Frequency": "Self_Resonant_Frequency (MHz)",
+      "Operating Temperature (Minimum)": null,
+      "Operating Temperature (Maximum)": null
+    }
+  },
+  "Inductors For Digital Audio": {
+    "core": {
+      "Inductance": "Inductance (\u00b5H)",
+      "Rated Current": "Rated_Current (A)",
+      "Dimensions": ["Length (mm)", "Height (mm)", "Width (mm)"]
+    },
+    "optional": {
+      "Tolerance": null,
+      "DC Resistance": "DC_Resistance (\u03a9)",
+      "Self-Resonant Frequency": "Self_Resonant_Frequency (MHz)",
+      "Operating Temperature (Minimum)": null,
+      "Operating Temperature (Maximum)": null
+    }
+  },
+  "Air Core Power Inductor": {
+    "core": {
+      "Inductance": "Inductance (\u00b5H)",
+      "Rated Current": "Rated_Current (A)",
+      "Dimensions": ["Size_Code", "Length (mm)", "Height (mm)", "Width (mm)"]
+    },
+    "optional": {
+      "Tolerance": null,
+      "DC Resistance": "DC_Resistance (\u03a9)",
+      "Self-Resonant Frequency": "Self_Resonant_Frequency (MHz)",
+      "Operating Temperature (Minimum)": null,
+      "Operating Temperature (Maximum)": null
+    }
+  }
+},
+    "Resistors": {
+    "Thick Film Resistors": {
+    "core": {
+      "Resistance": "Resistance (Ohm)",
+      "Power Rating": "Rated_Power (W)",
+      "Dimensions": ["Size_Code", "Length (mm)", "Height (mm)", "Width (mm)"]
+    },
+    "optional": {
+      "Tolerance": null,
+      "Operating Temperature (Minimum)": null,
+      "Operating Temperature (Maximum)": null
+    }
+  },
+
+    "Metal Plate Resistors": {
+  "core": {
+    "Resistance": "Resistance (Ohm)",
+    "Power Rating": "Rated_Power (W)",
+    "Dimensions": ["Size_Code", "Length (mm)", "Height (mm)", "Width (mm)"]
+  },
+  "optional": {
+    "Tolerance": null,
+    "Operating Temperature (Minimum)": null,
+    "Operating Temperature (Maximum)": null
+  }
+    }
+
+    }
+}
