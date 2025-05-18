@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse, StreamingResponse
+from backend import othertowürth
 from matchmaking.matchmaking import match_wuerth_components, rules
 import pandas as pd
 from io import BytesIO
@@ -8,9 +9,10 @@ from openaispecsheetsearch import get_component_model_from_partnumber
 import json
 from fastapi.middleware.cors import CORSMiddleware
 import traceback
+from othertowürth import process_parsed_component
 
 app = FastAPI()
-
+partnumbers = {}
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],  # oder "*" für alle Domains (unsicher in Produktion)
@@ -44,6 +46,7 @@ async def identify_part(partnumber: str):
             "manufacturer": result.manufacturer,
             "status": "identified"
         }
+        partnumbers[partnumber] = result
         return JSONResponse(content=response)
 
     except Exception as e:
@@ -55,28 +58,12 @@ async def identify_part(partnumber: str):
             "error": str(e)
         }
         return JSONResponse(content=error_response, status_code=200)
-@app.post("/find-components")
-def find_components():
-    source = {
-        "Order_Code": "890324025031CS",
-        "Product_Group": "Capacitors",
-        "Product_Series": "WCAP-FTX2 Film Capacitors",
-        "Product_Family": "Film Capacitors",
-        "Capacitance (µF)": 0.27,
-        "Rated_Voltage (V)": 275,
-        "Rated_Voltage_2 (V)": 560,
-        "Rate_Of_Voltage_Rise (V/µs)": 250,
-        "Dissipation_Factor (%)": 3,
-        "Operating_Temperature (°C) Minimum": -40,
-        "Operating_Temperature (°C) Maximum": 105,
-        "Safety_Class": "X2",
-        "Pitch (mm)": 15,
-        "Length (mm)": 18,
-        "Width (mm)": 7.5,
-        "Height (mm)": 14.5,
-        "Size_Code": "Pitch 15 mm",
-    }
 
+
+@app.post("/find-components")
+def find_components(partnumber: str):
+    part = partnumbers.get(partnumber)
+    source = process_parsed_component(part)
     matches = match_wuerth_components(source, top_k=5)
 
     json_response = {
